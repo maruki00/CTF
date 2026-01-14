@@ -10,7 +10,6 @@ import (
 	"os"
 	"regexp"
 	"strings"
-	"time"
 )
 
 func request(url string, body string) ([]byte, error) {
@@ -28,6 +27,7 @@ func request(url string, body string) ([]byte, error) {
 	if err != nil {
 		return []byte{}, errors.New("Client error : " + err.Error())
 	}
+	defer respone.Body.Close()
 
 	return io.ReadAll(respone.Body)
 }
@@ -43,10 +43,10 @@ func decode(payload string) string {
 }
 
 func main() {
-	var response []byte 
+	var response []byte
 	var err error = nil
 	var code []string
-	var decodedCode string 
+	var decodedCode string
 	var url string
 	flag.StringVar(&url, "url", "", "url to attack")
 	flag.Parse()
@@ -63,6 +63,10 @@ func main() {
 		}
 		code = getCode(response)
 		decodedCode = decode(code[1])
-		println(decodedCode)
+		if len(decodedCode)!= 32 {
+			println("decodedCode : ", decodedCode)
+			break
+		}
+		print("\r\r", decodedCode, "  ", code[1] )
 	}
 }
