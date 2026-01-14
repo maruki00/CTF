@@ -22,7 +22,7 @@ func request(url string, body string) ([]byte, error) {
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	client := http.Client{
-		Timeout: time.Second * 1,
+		//Timeout: time.Second * 1,
 	}
 	respone, err := client.Do(req)
 	if err != nil {
@@ -43,10 +43,10 @@ func decode(payload string) string {
 }
 
 func main() {
-	var response []byte = make([]byte, 0, 4048)
+	var response []byte 
 	var err error = nil
 	var code []string
-	var decodedCode string = ""
+	var decodedCode string 
 	var url string
 	flag.StringVar(&url, "url", "", "url to attack")
 	flag.Parse()
